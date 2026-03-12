@@ -1,0 +1,1 @@
+# Core - Infraestrutura da aplicação

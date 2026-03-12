@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreatTrace - Threat Intelligence Investigation Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+    <script src="/static/js/i18n.js"></script>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="app-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-section-header">
+                    <h4 data-i18n="recentInvestigations">Recent Investigations</h4>
+                    <button type="button" class="btn-clear-history" id="btn-clear-history" title="Limpar histórico" data-i18n-title="clearHistory">✕</button>
+                </div>
+                <div id="history-list"></div>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="header">
+                <div class="header-brand">
+                    <h1 data-i18n="appTitle">ThreatTrace</h1>
+                    <p class="subtitle" data-i18n="appSubtitle">Threat Intelligence Investigation Platform</p>
+                </div>
+                <nav class="header-nav">
+                    <a href="/" data-i18n="dashboard">Dashboard</a>
+                    <a href="/docs" target="_blank" data-i18n="apiDocs">API Docs</a>
+                    <div class="lang-selector">
+                        <button type="button" class="lang-btn" data-lang="pt" title="Português">PT</button>
+                        <button type="button" class="lang-btn" data-lang="en" title="English">EN</button>
+                        <button type="button" class="lang-btn" data-lang="es" title="Español">ES</button>
+                    </div>
+                </nav>
+            </header>
+
+            <section class="investigation-panel">
+                <h3 data-i18n="newInvestigation">New Investigation</h3>
+                <form id="search-form">
+                    <div class="mode-tabs">
+                        <button type="button" class="mode-tab active" data-mode="lookup" data-i18n="quickLookup">Quick Lookup</button>
+                        <button type="button" class="mode-tab" data-mode="investigate" data-i18n="fullInvestigation">Full Investigation</button>
+                    </div>
+                    <div class="type-tabs">
+                        <button type="button" class="type-tab active" data-type="domain" data-i18n="domain">Domain</button>
+                        <button type="button" class="type-tab" data-type="url" data-i18n="url">URL</button>
+                        <button type="button" class="type-tab" data-type="hash" data-i18n="hash">Hash</button>
+                        <button type="button" class="type-tab" data-type="tag" data-i18n="tag">Tag</button>
+                        <button type="button" class="type-tab" data-type="signature" data-i18n="signature">Signature</button>
+                    </div>
+                    <div class="search-row">
+                        <div class="input-wrap input-domain">
+                            <input type="text" id="input-domain" data-i18n-placeholder="placeholderDomain" required>
+                        </div>
+                        <div class="input-wrap input-url hidden">
+                            <input type="url" id="input-url" data-i18n-placeholder="placeholderUrl">
+                        </div>
+                        <div class="input-wrap input-hash hidden">
+                            <input type="text" id="input-hash" data-i18n-placeholder="placeholderHash">
+                        </div>
+                        <div class="input-wrap input-tag hidden">
+                            <input type="text" id="input-tag" data-i18n-placeholder="placeholderTag">
+                        </div>
+                        <div class="input-wrap input-signature hidden">
+                            <input type="text" id="input-signature" data-i18n-placeholder="placeholderSignature">
+                        </div>
+                        <button type="submit" class="btn-investigate" id="btn-submit" data-i18n="investigate">Investigate</button>
+                    </div>
+                    <div class="samples-section">
+                        <button type="button" class="btn-samples" id="btn-load-samples" data-i18n="loadSamples">Load test samples</button>
+                        <div id="samples-list" class="samples-list hidden"></div>
+                    </div>
+                </form>
+            </section>
+
+            <div id="loading" class="loading-overlay hidden">
+                <div class="loading-spinner"></div>
+                <p id="loading-text" data-i18n="analyzing">Analyzing...</p>
+            </div>
+
+            <div id="error" class="error-toast hidden"></div>
+
+            <section id="dashboard" class="dashboard-grid hidden">
+                <div class="panel col-12">
+                    <div class="panel-title" data-i18n="threatOverview">Threat Overview</div>
+                    <div id="threat-overview"></div>
+                </div>
+                <div class="panel col-4">
+                    <div class="panel-title" data-i18n="riskScore">Risk Score</div>
+                    <div id="risk-gauge"></div>
+                </div>
+                <div class="panel col-8">
+                    <div class="panel-title" data-i18n="campaignTimeline">Campaign Timeline</div>
+                    <div class="chart-wrap">
+                        <canvas id="timeline-chart"></canvas>
+                    </div>
+                </div>
+                <div class="panel col-12">
+                    <div class="panel-title" data-i18n="campaigns">Campaigns</div>
+                    <div id="campaign-table-wrap"></div>
+                </div>
+                <div class="panel col-6">
+                    <div class="panel-title" data-i18n="infrastructure">Infrastructure</div>
+                    <div id="infrastructure-panel"></div>
+                </div>
+                <div class="panel col-6">
+                    <div class="panel-title" data-i18n="maliciousUrls">Malicious URLs</div>
+                    <div id="urls-panel"></div>
+                </div>
+                <div class="panel col-12 graph-panel">
+                    <div class="panel-title" data-i18n="threatGraph">Threat Infrastructure Graph</div>
+                    <div id="cy-graph"></div>
+                </div>
+                <div class="panel col-12">
+                    <div class="panel-title" data-i18n="export">Export</div>
+                    <div class="export-btns">
+                        <button class="btn" id="btn-export-json">JSON</button>
+                        <button class="btn" id="btn-export-pdf">PDF</button>
+                        <button class="btn" id="btn-export-md">Markdown</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/js/ui.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/timeline.js"></script>
+    <script src="/static/js/graph.js"></script>
+    <script src="/static/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.lang = getLang() === 'pt' ? 'pt-BR' : getLang();
+            applyTranslations();
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setLang(btn.dataset.lang);
+                    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+                if (btn.dataset.lang === getLang()) btn.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
