@@ -1,22 +1,80 @@
 # ThreatTrace
 
-> **Threat Intelligence Investigation Platform** — OSINT-based tool that discovers threat infrastructure, correlates intelligence, scores risk, and visualizes campaigns.
+![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-Framework-009688)
+![Docker](https://img.shields.io/badge/Docker-Supported-2496ED)
+![License](https://img.shields.io/badge/License-MIT-green)
+![OSINT](https://img.shields.io/badge/Category-OSINT-red)
+![Threat Intelligence](https://img.shields.io/badge/Threat-Intelligence-orange)
 
-Inspired by SpiderFoot and commercial platforms like Recorded Future. Suitable for cybersecurity portfolios.
+**ThreatTrace** is an **OSINT-based Threat Intelligence Investigation Platform** that discovers malicious infrastructure, correlates intelligence, scores risk, and visualizes threat campaigns.
 
-## Features
+The platform automates multi-source OSINT investigations and helps analysts understand relationships between domains, URLs, IPs, and infrastructure.
+
+Inspired by tools like SpiderFoot and enterprise threat intelligence platforms.
+
+---
+
+# Dashboard
+
+ThreatTrace provides a **web-based investigation dashboard** for exploring threat infrastructure.
+
+Features include:
+
+- Infrastructure graph visualization
+- Campaign timeline analysis
+- Risk scoring
+- Multi-source OSINT enrichment
+- Automated investigation engine
+
+Example workflow:
+
+1. Enter a domain / URL / hash
+2. Run investigation
+3. Explore graph relationships
+4. Analyze timeline and campaign patterns
+5. Export intelligence report
+
+---
+
+# Key Features
 
 | Feature | Description |
-|---------|-------------|
-| **Threat Graph** | Domain → URL → Payload Hash relationships (D3.js/Cytoscape compatible) |
-| **Timeline Analysis** | Campaign activity over time |
-| **Modular OSINT** | URLHaus, crt.sh, Passive DNS, GitHub modules |
-| **Investigation Engine** | Automated multi-module scanning |
-| **Risk Scoring** | 0-100 score (low/medium/high) |
-| **Intel Correlation** | Shared infrastructure, payloads, families |
-| **Pattern Detection** | DGA, infrastructure reuse, multi-campaign |
-| **Monitoring** | Track domains, webhook/email alerts |
-| **Reports** | JSON, PDF, Markdown |
+|------|-------------|
+| Threat Infrastructure Graph | Visualize Domain → URL → Payload Hash relationships |
+| Campaign Timeline | Analyze campaign activity over time |
+| Modular OSINT Engine | URLHaus, crt.sh, Passive DNS, GitHub modules |
+| Automated Investigation | Multi-module scanning engine |
+| Risk Scoring | Score infrastructure risk from 0–100 |
+| Intelligence Correlation | Detect shared infrastructure and payloads |
+| Pattern Detection | Identify suspicious patterns (DGA, infra reuse) |
+| Monitoring | Track domains and receive alerts |
+| Investigation Reports | Export results as JSON, PDF, Markdown |
+
+---
+
+# Architecture
+
+ThreatTrace is designed using a **modular OSINT investigation architecture**.
+
+Core components include:
+
+- **Scan Engine** — orchestrates OSINT modules  
+- **Threat Graph Builder** — maps infrastructure relationships  
+- **Timeline Analyzer** — detects campaign activity patterns  
+- **Risk Scoring Engine** — calculates threat level  
+- **Intel Correlator** — identifies shared indicators  
+- **Monitoring Service** — tracks domains over time  
+
+---
+
+# Quick Start
+
+Clone the repository:
+
+```bash
+git clone https://github.com/carlos-rezende/ThreatTrace.git
+cd ThreatTrace
 
 ## Quick Start
 
@@ -51,38 +109,104 @@ uvicorn app.main:app --reload --port 8090
 
 ```
 ThreatTrace/
+│
 ├── app/
 │   ├── main.py
-│   ├── core/           # config, limiter
-│   ├── api/            # routes
-│   ├── clients/        # URLHaus client
-│   ├── modules/        # OSINT modules (urlhaus, crtsh, github, passive_dns)
-│   ├── engine/         # Scan engine, module runner
-│   ├── graph/          # Graph builder, models, service
-│   ├── services/       # Campaign analyzer, timeline, risk, correlation, patterns
-│   ├── monitoring/     # Monitor service
-│   ├── reports/        # Investigation reports
-│   ├── schemas/        # Pydantic schemas
-│   └── utils/          # Report generator
-├── static/             # Dashboard (Chart.js)
+│   ├── core/            # configuration & rate limiting
+│   ├── api/             # REST endpoints
+│   ├── clients/         # external API clients
+│   ├── modules/         # OSINT modules
+│   ├── engine/          # investigation engine
+│   ├── graph/           # infrastructure graph builder
+│   ├── services/        # timeline, risk scoring, correlation
+│   ├── monitoring/      # monitoring service
+│   ├── reports/         # investigation reports
+│   ├── schemas/         # Pydantic models
+│   └── utils/           # helpers
+│
+├── static/              # web dashboard
 ├── Dockerfile
-└── docker-compose.yml
+├── docker-compose.yml
+└── requirements.txt
 ```
 
 ## Environment
 
 ```env
-URLHAUS_AUTH_KEY=your-key    # Required
-GITHUB_TOKEN=optional        # For GitHub module
-PORT=8090
+| Variable         | Description                     |
+| ---------------- | ------------------------------- |
+| URLHAUS_AUTH_KEY | Required API key                |
+| GITHUB_TOKEN     | Optional GitHub OSINT module    |
+| PORT             | Application port (default 8090) |
+
 ```
 
-## Docker
+## Running with Docker
 
 ```bash
 docker-compose up -d
 ```
 
+```Then open:
+http://localhost:8090
+```
+## Roadmap
+
+Planned improvements:
+
+- Threat actor clustering
+- Infrastructure fingerprinting
+- Threat feed aggregation
+- Historical attack surface analysis
+- Graph-based intelligence correlation
+
+---
+
+## Contributing
+
+Contributions are welcome.
+
+Steps:
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Open a Pull Request
+
+---
+
+## Security Notice
+
+ThreatTrace uses **public OSINT sources**.
+
+The project is intended for:
+
+- Cybersecurity research
+- Threat intelligence analysis
+- Educational use
+
+---
+
 ## License
 
-MIT
+MIT License
+
+---
+
+## Author
+
+**Carlos Rezende**
+
+Cybersecurity enthusiast building **OSINT and threat intelligence tools**.
+
+---
+
+## Portfolio Value
+
+This project demonstrates:
+
+- OSINT automation
+- Threat Intelligence tooling
+- FastAPI backend architecture
+- Cybersecurity data analysis
+- Graph-based infrastructure mapping
