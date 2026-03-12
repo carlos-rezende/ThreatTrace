@@ -1,11 +1,12 @@
 # ThreatTrace
 
+[![Threat Intelligence Demo](https://img.shields.io/badge/ThreatTrace-Live%20Demo-orange)](https://threattrace-raou.onrender.com/)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Framework-009688)
 ![Docker](https://img.shields.io/badge/Docker-Supported-2496ED)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![OSINT](https://img.shields.io/badge/Category-OSINT-red)
-![Threat Intelligence](https://img.shields.io/badge/Threat-Intelligence-orange)
+
 
 **ThreatTrace** is an **OSINT-based Threat Intelligence Investigation Platform** that discovers malicious infrastructure, correlates intelligence, scores risk, and visualizes threat campaigns.
 
